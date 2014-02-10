@@ -170,6 +170,8 @@ static List<RobustnessResults> robustnessHistory;
 
 boolean weightedLinks = false;
 
+boolean debug = true;
+
 public CalcRobustness robust;
 
 
@@ -390,11 +392,7 @@ private void init() {
 	serviceBundles = new ArrayList<ArrayList<Service>>();
 	try {
 		if (configPath == null) {
-			//configPath = "/home/ubuntu/diversify-simulation/simulacron";
-			//configPath = "/Users/kyeboaha/Downloads/diversify-simulation/simulacron/bipartiteModel.conf";
 			configPath = getClass().getResource("/neutralModel.conf").toString();
-//			configPath = System.getProperty("user.dir");
-			//configPath += "/bipartiteModel.conf";
 		}
 		Configuration.setConfig(configPath);
 	}
@@ -451,13 +449,10 @@ public BipartiteGraph extinctionClone() {
 	clone.platformMinSize = platformMinSize;
 	clone.maxCycles = maxCycles;
 	clone.entityStrategies = entityStrategies;
-	// clone.platforms = new ArrayList<Platform>(platforms);
 
 	for (Platform platform : platforms) {
 		clone.platforms.add(new Platform(platform));
 	}
-
-	// clone.apps = new ArrayList<App>(apps);
 
 	for (App app : apps) {
 		clone.apps.add(new App(app));
@@ -472,6 +467,7 @@ public BipartiteGraph extinctionClone() {
 	clone.stepsPerCycle = stepsPerCycle;
 	clone.serviceBundles = serviceBundles;
 	clone.nextBundle = nextBundle;
+	clone.debug = debug;
 	return clone;
 }
 
@@ -495,7 +491,7 @@ private void readConfig() {
 	if (seed != 0) {
 		random().setSeed(seed);
 	}
-	//System.err.println("Config : seed = " + seed);
+	if (debug) System.err.println("Config : seed = " + seed);
 	supervised = Configuration.getBoolean("supervised");
 	initApps = Configuration.getInt("init_apps");
 	initPlatforms = Configuration.getInt("init_platforms");
@@ -534,8 +530,8 @@ protected void initPlatform() throws IllegalAccessException, InstantiationExcept
 	int c = getNumPlatforms();
 	for (String kind : Configuration.getSpecies("platform")) {
 		createEntities(kind, initPlatforms, platforms);
-//		System.err.println("Config : INFO : created " + (getNumPlatforms() - c)
-//				+ " new platforms of type " + kind);
+		if (debug) System.err.println("Config : INFO : created " + (getNumPlatforms() - c) 
+				+ " new platforms of type " + kind);
 		c = getNumPlatforms();
 	}
 }
@@ -547,7 +543,7 @@ protected void initApp() throws IllegalAccessException, ClassNotFoundException,
 	int c = getNumApps();
 	for (String s : Configuration.getSpecies("app")) {
 		createEntities(s, initApps, apps);
-//		System.err.println("Config : INFO : created " + (getNumApps() - c) + " new apps of type " + s);
+		if (debug) System.err.println("Config : INFO : created " + (getNumApps() - c) + " new apps of type " + s);
 		c = getNumApps();
 	}
 }
@@ -561,8 +557,8 @@ protected void initServices() {
 			services.add(new Service(Service.counter, Service.counter, 1, ServiceState.OK));
 			Service.counter++;
 		}
-//		System.err.println("Config : INFO : created " + (Service.counter - c)
-//				+ " new services of type " + s);
+		if (debug) System.err.println("Config : INFO : created " + (Service.counter - c) 
+				+ " new services of type " + s);
 		c = Service.counter;
 	}
 }
@@ -579,7 +575,7 @@ public ArrayList<Service> nextBundle() {
  */
 public void start(String path) {
 	configPath = path;
-	System.err.println("Config : INFO : Starting with config file: " + path);
+	if (debug) System.err.println("Config : INFO : Starting with config file: " + path);
 	start();
 }
 
@@ -645,9 +641,9 @@ public void start() {
 	Steppable print = new Steppable() {
 
 		public void step(SimState state) {
-			//	System.out.println("CYCLE " + getCurCycle() + " Apps alive: " + getAliveAppsNumber());
+			if (debug) System.out.println("CYCLE " + getCurCycle() + " Apps alive: " + getAliveAppsNumber());
 			if (changed) {
-//				 printoutNetwork();
+				if (debug) printoutNetwork();
 			}
 			changed = false;
 //			System.out.println("METRICS: " + metrics.recordSnapshot());
@@ -788,6 +784,7 @@ public static void main() {
 }
 
 public static void main(String[] args) {
+	if (args.length == 0) args = new String[]{"-quiet"};
 	// loggers levels
 	Log.ERROR();
 	// run starting time
@@ -839,6 +836,7 @@ public static void main(String[] args) {
 			System.err.println("COMMAND LINE PARAMETER: title = " + title);
 		}
 	}
+
 	// reading config folder to gather config files
 	if (configFolderPath != null) {
 		configList = new Bag();
@@ -911,7 +909,7 @@ public void end() throws Throwable {
 		System.out.println("Error Ending");
 		e.printStackTrace();
 	}
-	System.out.println("Ended Simulation");
+	if (debug) System.out.println("Ended Simulation");
 }
 
 public double robustnessScore(int trials) {
