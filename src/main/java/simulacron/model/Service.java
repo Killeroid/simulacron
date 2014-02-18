@@ -1,5 +1,11 @@
 package simulacron.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Services are comparable, so that they can be kept in sorted array
  * (see the constructor of the entities, e.g. {@code Platform#Platform(int, java.util.List)})
@@ -19,6 +25,8 @@ public class Service implements Comparable<Service> {
 	int version;
 	ServiceState state;
 	static int maxLastVersion = 1;
+	Set<Service> dependencies = new HashSet<Service>(); //Services I require/depend on
+	Set<Service> supersedes = new HashSet<Service>(); //Services I supersede/provide
 
 	public Service(int id) {
 		this.id = id;
@@ -34,6 +42,62 @@ public class Service implements Comparable<Service> {
 		this.state = state;
 		maxLastVersion = Math.max(maxLastVersion,version);
 	}
+	
+	/*
+	 * Services that I depends on
+	 */
+	public List<Service> getDependencies() {
+		return new ArrayList<Service>(this.dependencies);
+	}
+	
+
+	public void addDependencies(List<Service> new_deps) {
+		this.dependencies.addAll(new_deps);
+	}
+	
+	public void addDependencies(Service s) {
+		this.dependencies.add(s);
+	}
+	
+	public boolean dependsOn(Service s) {
+		return (id == s.id || dependencies.contains(s));
+	}
+	
+	
+	
+	/*
+	 * Services that this provides
+	 */
+	public List<Service> provides() {
+		return new ArrayList<Service>(this.supersedes);
+	}
+
+	
+	public void addProvides(List<Service> srvcs) {
+		this.supersedes.addAll(srvcs);
+	}
+	
+	public void addProvides(Service srvc) {
+		this.supersedes.add(srvc);
+	}
+	
+	public boolean canProvide(Service s) {
+		return (id == s.id || supersedes.contains(s));
+	}
+	
+	public boolean canProvide(List<Service> srvs) {
+		boolean provides = true;
+		for (Service s: srvs) {
+			if (canProvide(s)) {
+				continue;
+			} else {
+				provides = false;
+				break;
+			}
+		}
+		return provides;
+	}
+	
 
 
 	@Override
@@ -56,7 +120,10 @@ public class Service implements Comparable<Service> {
 	}
 
 	public Service newVersion(int id) {
-		return new Service(id, name, version + 1, ServiceState.OK);
+		Service srvc = new Service(id, name, version + 1, ServiceState.OK);
+		srvc.addDependencies(getDependencies());
+		srvc.addProvides(provides());
+		return srvc;
 	}
 
 	@Override
