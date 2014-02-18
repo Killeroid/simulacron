@@ -20,7 +20,7 @@ public LinkStrategy() {
 }
 
 
-    public void evolve(BipartiteGraph graph, App e) {
+    public void evolve(Simulator graph, App e) {
         removeLinkFor(graph,e);
 
         Platform p = getBestPlatform(graph,e.getServices());
@@ -37,7 +37,7 @@ public void init(String stratId) {
 }
 
 
-protected void removeLinkFor(BipartiteGraph graph, App e) {
+protected void removeLinkFor(Simulator graph, App e) {
   // the graph is undirected, thus EdgesIn = EdgesOut
   Bag edges = graph.bipartiteNetwork.getEdgesIn(e); // read-only!
 
@@ -47,7 +47,7 @@ protected void removeLinkFor(BipartiteGraph graph, App e) {
 }
 
 
-    protected Platform getBestPlatform(BipartiteGraph graph, List<Service> services) {
+    protected Platform getBestPlatform(Simulator graph, List<Service> services) {
         Platform p = null;
         for(Entity platform : Entity.findEntityWithAllServices(graph.platforms, services))
             if(platform.getDegree() <= graph.getPlatformMaxLoad()) {
@@ -58,7 +58,7 @@ protected void removeLinkFor(BipartiteGraph graph, App e) {
     }
 
 
-    protected List<Platform> getPlatform(BipartiteGraph graph, List<Service> services) {
+    protected List<Platform> getPlatform(Simulator graph, List<Service> services) {
         List<Platform> list = new ArrayList<Platform>();
         List<Service> tmp = new ArrayList<Service>(services);
 

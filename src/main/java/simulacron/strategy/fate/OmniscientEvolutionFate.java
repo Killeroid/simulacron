@@ -15,7 +15,7 @@ import org.jfree.util.Log;
 
 import sim.util.Bag;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
@@ -32,7 +32,7 @@ public OmniscientEvolutionFate() {
 
 @SuppressWarnings("unchecked")
 @Override
-public void evolve(BipartiteGraph graph, Fate agent) {
+public void evolve(Simulator graph, Fate agent) {
 	// System.out.println("B:" + graph.apps);
 	// System.out.println("B:" + graph.platforms);
 	String linkingName = "linkingC";

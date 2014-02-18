@@ -1,6 +1,6 @@
 package simulacron.strategy.platform;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.strategy.AbstractStrategy;
 import simulacron.strategy.Strategy;
@@ -26,7 +26,7 @@ public class SplitOrClone extends AbstractStrategy<Platform> {
 
 
     @Override
-    public void evolve(BipartiteGraph graph, Platform platform) {
+    public void evolve(Simulator graph, Platform platform) {
     if (((double)platform.getSize()) >= sFactor * graph.getPlatformMinSize()) {
       split.evolve(graph, platform);
       platform.action = "combo->" + platform.action;

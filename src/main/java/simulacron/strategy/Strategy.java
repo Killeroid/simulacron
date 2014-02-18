@@ -1,6 +1,6 @@
 package simulacron.strategy;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import sim.engine.Steppable;
 
 /**
@@ -12,9 +12,9 @@ public interface Strategy<T extends Steppable> {
 
     /**
      * @param agent the model which is evolve
-     * @param graph The bipartitegraph.
+     * @param graph The Simulator.
      */
-    public void evolve(BipartiteGraph graph, T agent);
+    public void evolve(Simulator graph, T agent);
 
 void init(String stratId);
 

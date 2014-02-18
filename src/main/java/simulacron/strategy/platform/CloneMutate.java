@@ -7,7 +7,7 @@ import java.util.Arrays;
 import sim.field.network.Edge;
 import sim.util.Bag;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Service;
 import simulacron.strategy.AbstractStrategy;
@@ -33,7 +33,7 @@ public CloneMutate(String n, double m) {
 
 
 @Override
-public void evolve(BipartiteGraph graph, Platform platform) {
+public void evolve(Simulator graph, Platform platform) {
 	clone_Mutate(graph, platform);
 }
 
@@ -45,7 +45,7 @@ public void evolve(BipartiteGraph graph, Platform platform) {
  * 
  * @param graph
  */
-private void clone_Mutate(BipartiteGraph graph, Platform platform) {
+private void clone_Mutate(Simulator graph, Platform platform) {
 	int csize, i;
 	Bag temp = new Bag();
 	Bag edges = graph.bipartiteNetwork.getEdges(this, null); // read-only!

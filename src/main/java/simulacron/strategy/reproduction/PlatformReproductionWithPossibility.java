@@ -3,7 +3,7 @@ package simulacron.strategy.reproduction;
 import java.util.Collections;
 import java.util.List;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 
 
@@ -21,7 +21,7 @@ public PlatformReproductionWithPossibility(double possiblility, ReproStrategy<Pl
 	}
 
 	@Override
-	public List<Platform> reproduce(Platform parent, BipartiteGraph state) {
+	public List<Platform> reproduce(Platform parent, Simulator state) {
 	if (state.random.nextDouble() < possibility) {
 			 return reproducer.reproduce(parent, state);
 		 }
@@ -30,7 +30,7 @@ public PlatformReproductionWithPossibility(double possiblility, ReproStrategy<Pl
 	}
 
     @Override
-    public void evolve(BipartiteGraph graph, Platform agent) {
+    public void evolve(Simulator graph, Platform agent) {
       reproduce(agent, graph);
     }
 

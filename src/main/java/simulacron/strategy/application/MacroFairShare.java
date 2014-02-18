@@ -20,7 +20,7 @@ public MacroFairShare() {
 }
 
 
-public void evolve(BipartiteGraph graph, App e) {
+public void evolve(Simulator graph, App e) {
 	if (graph.getNumPlatforms() > 0) {
 		Bag platforms = new Bag(graph.platforms);
 		for (Service s: e.getServices()) {

@@ -2,7 +2,7 @@ package simulacron.strategy.reproduction;
 
 import java.util.List;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.strategy.AbstractStrategy;
 
@@ -15,10 +15,10 @@ protected ReproStrategy(String n) {
 }
 
 
-abstract public List<T> reproduce(T parent, BipartiteGraph state);
+abstract public List<T> reproduce(T parent, Simulator state);
 
 
 @Override
-abstract public void evolve(BipartiteGraph state, T parent);
+abstract public void evolve(Simulator state, T parent);
 
 }

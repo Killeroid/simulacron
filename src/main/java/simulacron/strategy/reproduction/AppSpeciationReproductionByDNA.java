@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 
 
 /**
@@ -25,7 +25,7 @@ public class AppSpeciationReproductionByDNA extends ReproStrategy<App> {
 	}
 
 
-	public List<App> reproduce(App parent, BipartiteGraph state) {
+	public List<App> reproduce(App parent, Simulator state) {
 	App child = state.createApp(""); // TODO
 	child.setServices(this.speciator.speciate(parent.getDependencies(), state.services));
 	child.setStrategy(parent.getStrategy());
@@ -35,7 +35,7 @@ public class AppSpeciationReproductionByDNA extends ReproStrategy<App> {
 	}
 
     @Override
-    public void evolve(BipartiteGraph graph, App agent) {
+    public void evolve(Simulator graph, App agent) {
       reproduce(agent, graph);
     }
 

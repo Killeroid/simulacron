@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import sim.util.Bag;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.model.Fate;
 import simulacron.strategy.AbstractStrategy;
@@ -29,7 +29,7 @@ public MacroFairShareModel() {
 }
 
 @Override
-public void evolve(BipartiteGraph graph, Fate agent)  {
+public void evolve(Simulator graph, Fate agent)  {
 	LeastResourceHungryFirst(graph, link);
 	kill.evolve(graph,agent);
 	add.evolve(graph,agent);
@@ -37,12 +37,12 @@ public void evolve(BipartiteGraph graph, Fate agent)  {
 
 @Override
 public void init(String stratId) {
-	kill = (Strategy<Fate>) BipartiteGraph.getStrategy(Configuration.getString(stratId + ".kill"));
-	add = (Strategy<Fate>) BipartiteGraph.getStrategy(Configuration.getString(stratId + ".add"));
+	kill = (Strategy<Fate>) Simulator.getStrategy(Configuration.getString(stratId + ".kill"));
+	add = (Strategy<Fate>) Simulator.getStrategy(Configuration.getString(stratId + ".add"));
 	link = new simulacron.strategy.application.MacroFairShare();
 }
 
-private void LeastResourceHungryFirst(BipartiteGraph graph, Strategy<App> Link) {
+private void LeastResourceHungryFirst(Simulator graph, Strategy<App> Link) {
 	Bag entities = new Bag(graph.getNumApps());
 	for (App a : graph.apps)
 		entities.add(a);

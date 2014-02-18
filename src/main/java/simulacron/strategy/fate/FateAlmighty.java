@@ -19,13 +19,13 @@ public FateAlmighty(String n, Strategy<Fate> s) {
 
 
 @Override
-public void evolve(BipartiteGraph graph, Fate agent) {
+public void evolve(Simulator graph, Fate agent) {
   randomizedEntityEvolution(graph);
   strategy.evolve(graph, agent);
 }
 
 
-private void randomizedEntityEvolution(BipartiteGraph graph) {
+private void randomizedEntityEvolution(Simulator graph) {
   Bag entities = new Bag(graph.getNumApps() + graph.getNumPlatforms());
   for (App a : graph.apps)
     entities.add(a);

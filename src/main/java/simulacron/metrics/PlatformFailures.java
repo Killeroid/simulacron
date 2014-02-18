@@ -6,13 +6,13 @@ import java.util.Map;
 
 import sim.field.network.Edge;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 
 public class PlatformFailures {
-	BipartiteGraph graph;
+	Simulator graph;
 
-	public PlatformFailures(BipartiteGraph graph){
+	public PlatformFailures(Simulator graph){
 		this.graph = graph;
 	}
 	

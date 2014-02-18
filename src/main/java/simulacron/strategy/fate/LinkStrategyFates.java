@@ -11,7 +11,7 @@ import java.util.Map;
 import sim.field.network.Edge;
 import sim.util.Bag;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.model.Platform;
 import simulacron.model.Service;
@@ -26,19 +26,19 @@ public LinkStrategyFates() {}
 public static Map<String, Class[]> getLinkingMethods() {
 	Map<String, Class[]> results = new HashMap<String, Class[]>();
 	Class[] args = new Class[1];
-	args[0] = BipartiteGraph.class;
+	args[0] = Simulator.class;
 	results.put("linkingA", args);
 	args = new Class[1];
-	args[0] = BipartiteGraph.class;
+	args[0] = Simulator.class;
 	results.put("linkingB", args);
 	args = new Class[1];
-	args[0] = BipartiteGraph.class;
+	args[0] = Simulator.class;
 	results.put("linkingC", args);
 	return results;
 }
 
 
-public static void linkingA(BipartiteGraph graph) {
+public static void linkingA(Simulator graph) {
 	graph.removeAllEdges();
 	Bag platforms = new Bag(graph.platforms);
 	platforms.shuffle(graph.random());
@@ -66,7 +66,7 @@ public static void linkingA(BipartiteGraph graph) {
 }
 
 
-public static void linkingB(BipartiteGraph graph) {
+public static void linkingB(Simulator graph) {
 	graph.removeAllEdges();
 	Bag platforms = new Bag(graph.platforms);
 	platforms.sort(new Comparator<Entity>() {
@@ -100,7 +100,7 @@ public static void linkingB(BipartiteGraph graph) {
 }
 
 
-public static void linkingC(BipartiteGraph graph) {
+public static void linkingC(Simulator graph) {
 	graph.removeAllEdges();
 	Bag platforms = new Bag(graph.platforms);
 	platforms.sort(new Comparator<Entity>() {

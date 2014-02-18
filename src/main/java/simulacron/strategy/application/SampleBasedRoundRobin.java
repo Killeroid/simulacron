@@ -24,7 +24,7 @@ public SampleBasedRoundRobin() {
 }
 
 
-public void evolve(BipartiteGraph graph, App e) {
+public void evolve(Simulator graph, App e) {
 	if (graph.getNumPlatforms() > 1) {
 		int threshold = (int)Math.ceil(graph.getMaxApps() / graph.getMaxPlatforms());
 		for (Service s: e.getServices()) {
@@ -64,7 +64,7 @@ public void init(String stratId) {
  * The bag is sorted in ascending order by degree
  * 
  */
-private Bag get_sample(Bag platforms, BipartiteGraph graph, int size) {
+private Bag get_sample(Bag platforms, Simulator graph, int size) {
 	Bag sample = new Bag(size);
 	for (int x = 0; x < size; x = x+1) {
 		if (platforms.size() > 0) {

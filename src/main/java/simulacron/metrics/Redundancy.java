@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Service;
 
@@ -20,9 +20,9 @@ import simulacron.model.Service;
  */
 public class Redundancy {
 	
-	BipartiteGraph graph = null;
+	Simulator graph = null;
 	
-	public Redundancy(BipartiteGraph graph){
+	public Redundancy(Simulator graph){
 		this.graph = graph;
 	}
 	

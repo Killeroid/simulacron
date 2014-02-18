@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.strategy.AbstractStrategy;
 import simulacron.strategy.Strategy;
@@ -32,7 +32,7 @@ public AddApp() {
 
 
 @Override
-public void evolve(BipartiteGraph graph, Fate agent) {
+public void evolve(Simulator graph, Fate agent) {
 	if (counter < Math.min(graph.getMaxCycles(), Integer.MAX_VALUE) - 1 && timing.size() < 1000) {
 		int n;
 		do {

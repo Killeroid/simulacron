@@ -1,6 +1,6 @@
 package simulacron.strategy.fate;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.strategy.Strategy;
 import simulacron.strategy.AbstractStrategy;
@@ -24,7 +24,7 @@ Strategy<Fate> addAppStrategy;
     }
 
     @Override
-    public void evolve(BipartiteGraph graph, Fate agent) {
+    public void evolve(Simulator graph, Fate agent) {
         killAppStrategy.evolve(graph,agent);
         addAppStrategy.evolve(graph,agent);
     }

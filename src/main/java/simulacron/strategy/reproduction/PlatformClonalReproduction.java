@@ -3,7 +3,7 @@ package simulacron.strategy.reproduction;
 import java.util.ArrayList;
 import java.util.List;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 
 
@@ -20,7 +20,7 @@ protected PlatformClonalReproduction(String n) {
 }
 
 
-public List<Platform> reproduce(Platform parent, BipartiteGraph state) {
+public List<Platform> reproduce(Platform parent, Simulator state) {
 	Platform child = state.createPlatform(""); // TODO
 	child.setServices(parent.getServices());
 	child.setStrategy(parent.getStrategy());
@@ -31,7 +31,7 @@ public List<Platform> reproduce(Platform parent, BipartiteGraph state) {
 	}
 
   @Override
-  public void evolve(BipartiteGraph graph, Platform agent) {
+  public void evolve(Simulator graph, Platform agent) {
     reproduce(agent, graph);
   }
 

@@ -16,7 +16,7 @@ import java.util.concurrent.Future;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.strategy.fate.KillFates;
 import simulacron.strategy.fate.LinkStrategyFates;
 import simulacron.util.Log;
@@ -24,7 +24,7 @@ import simulacron.util.Log;
 
 public class Robustness {
 
-public static RobustnessResults calculateRobustness(BipartiteGraph graph, Method linking,
+public static RobustnessResults calculateRobustness(Simulator graph, Method linking,
     Method killing) {
 	RobustnessResults robustnessResult = new RobustnessResults();
 	// saving graph status
@@ -34,7 +34,7 @@ public static RobustnessResults calculateRobustness(BipartiteGraph graph, Method
 	 * for (Platform platform : graph.platforms) { deadPlatformList.add(!platform.isAlive()); }
 	 */
 	// shallow cloning
-	BipartiteGraph clone = graph.extinctionClone();
+	Simulator clone = graph.extinctionClone();
 	double robustness = 0;
 	double maxRobustness = clone.getNumApps() * clone.getNumPlatforms();
 	for (int i = clone.getNumPlatforms() - 1; i >= 0; i--) {
@@ -76,7 +76,7 @@ public static RobustnessResults calculateRobustness(BipartiteGraph graph, Method
 }
 
 
-public static Map<String, Map<String, Double>> calculateStatAllRobustness(BipartiteGraph graph,
+public static Map<String, Map<String, Double>> calculateStatAllRobustness(Simulator graph,
     int trials) {
 	Map<String, Map<String, Double>> results = new HashMap<String, Map<String, Double>>();
 	Method linkingMethod;
@@ -154,7 +154,7 @@ public static String nameStep(int step, int stepMax) {
 }
 
 
-public static Map<String, RobustnessResults> calculateAllRobustness(BipartiteGraph graph) {
+public static Map<String, RobustnessResults> calculateAllRobustness(Simulator graph) {
 	Map<String, RobustnessResults> results = new HashMap<String, RobustnessResults>();
 	Method linkingMethod;
 	Method killingMethod;
@@ -203,7 +203,7 @@ public static Map<String, RobustnessResults> calculateAllRobustness(BipartiteGra
 }
 
 
-public static String displayAllRobustness(BipartiteGraph graph, int trials) {
+public static String displayAllRobustness(Simulator graph, int trials) {
 	String result = "";
 	final Map<String, Map<String, Double>> robustness = calculateStatAllRobustness(graph, trials);
 	ArrayList<String> names = new ArrayList<String>(robustness.keySet());

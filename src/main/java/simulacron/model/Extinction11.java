@@ -18,7 +18,7 @@ import sim.engine.SimState;
 import sim.engine.Steppable;
 import simulacron.model.App;
 import simulacron.strategy.Strategy;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
@@ -37,15 +37,15 @@ public class Extinction11 implements Steppable{
 	public Extinction11(final int runs) {
 		final int cores = (Runtime.getRuntime().availableProcessors() > 1) ? 2 : 1;
 		if (Configuration.contains("extinction.kill")) {
-			killStrats = BipartiteGraph.getExtinctionStrategies("kill");
+			killStrats = Simulator.getExtinctionStrategies("kill");
 		}
 
 		if (Configuration.contains("extinction.link")) {
-			linkStrats = BipartiteGraph.getExtinctionStrategies("link");
+			linkStrats = Simulator.getExtinctionStrategies("link");
 		}
 
 		if (Configuration.contains("extinction.linkFate")) {
-			linkFateStrats = BipartiteGraph.getExtinctionStrategies("linkFate");
+			linkFateStrats = Simulator.getExtinctionStrategies("linkFate");
 		}
 		Steppable[] threads = new Steppable[cores];
 		
@@ -57,8 +57,8 @@ public class Extinction11 implements Steppable{
 			{
 				public void step(SimState state) {
 					for (Strategy<? extends Steppable> kill : killStrats) {
-						resultsMap.putAll(linking((BipartiteGraph)state, linkStrats.subList(0, (linkStrats.size()/cores)), kill, runs, false));
-						resultsMap.putAll(linking((BipartiteGraph)state, linkFateStrats.subList(0, (linkFateStrats.size()/cores)), kill, runs, true));
+						resultsMap.putAll(linking((Simulator)state, linkStrats.subList(0, (linkStrats.size()/cores)), kill, runs, false));
+						resultsMap.putAll(linking((Simulator)state, linkFateStrats.subList(0, (linkFateStrats.size()/cores)), kill, runs, true));
 					}
 					
 				}
@@ -79,7 +79,7 @@ public class Extinction11 implements Steppable{
 		Extinctionthreads.cleanup();
 	}
 	
-	Map<String, double[]> linking(BipartiteGraph graph, 
+	Map<String, double[]> linking(Simulator graph, 
 			List<Strategy<? extends Steppable>> linkStrats, Strategy<? extends Steppable> kill, int trials, boolean fate) {
 
 		Map<String, double[]> resultsMap = new HashMap<String, double[]>();
@@ -90,7 +90,7 @@ public class Extinction11 implements Steppable{
 			statResults = new double[8];
 			stats.clear();
 			for (int count = 0; count < trials; count++) {
-				BipartiteGraph clone = graph.extinctionClone();
+				Simulator clone = graph.extinctionClone();
 
 
 				double robustness = 0;

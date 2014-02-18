@@ -46,15 +46,15 @@ public Platform(Platform platform) {
 	this.action = platform.action;
 }
 
-public void init(String entityId, BipartiteGraph graph) {
+public void init(String entityId, Simulator graph) {
 	super.init(entityId, graph);
 	int numberServices = Math.min(
 	    Configuration.getInt(entityId + ".services", graph.getNumServices()), graph.getNumServices());
 	// for (Service s : graph.selectServices(numberServices)) {
-	// BipartiteGraph.addUnique(services, s);
+	// Simulator.addUnique(services, s);
 	// }
 	while (numberServices > 0) {
-		numberServices -= BipartiteGraph.addUnique(services, graph.selectSingleService()) >= 0 ? 1 : 0;
+		numberServices -= Simulator.addUnique(services, graph.selectSingleService()) >= 0 ? 1 : 0;
 	}
 	pressure = 0;
 	action = "none";
@@ -64,7 +64,7 @@ public void init(String entityId, BipartiteGraph graph) {
 public Platform(int id, List<Service> servs, Strategy<Platform> strategy) {
 	super(id, strategy);
 	for (Service s : servs) {
-		BipartiteGraph.addUnique(services, s);
+		Simulator.addUnique(services, s);
 	}
 	pressure = 0;
 	action = "none";
@@ -78,7 +78,7 @@ public Platform(int id, List<Service> servs, Strategy<Platform> strategy) {
 @SuppressWarnings("unchecked")
 @Override
 public void step(SimState state) {
-	BipartiteGraph graph = (BipartiteGraph)state;
+	Simulator graph = (Simulator)state;
 	action = "none";
 	if (getDegree() >= graph.getPlatformMaxLoad() && getSize() > graph.getPlatformMinSize()) {
 		strategy.evolve(graph, this);
@@ -89,7 +89,7 @@ public void step(SimState state) {
 	// printoutCurStep(graph);
 }
 
-public boolean atMaxLoad(BipartiteGraph graph) {
+public boolean atMaxLoad(Simulator graph) {
 	if (graph.weightedLinks) {
 		int maxload = Configuration.getInt(kind + ".maxload", (graph.getPlatformMaxLoad() * Math.min(
 			    Configuration.getInt(kind + ".services", graph.getNumServices()), graph.getNumServices()))); 
@@ -105,7 +105,7 @@ public boolean atMaxLoad(BipartiteGraph graph) {
 	}
 }
 
-public int getLoad(BipartiteGraph graph) {
+public int getLoad(Simulator graph) {
 	int load = 0;
 	if (graph.weightedLinks) {
 		Bag edges = graph.bipartiteNetwork.getEdgesIn(this);
@@ -118,7 +118,7 @@ public int getLoad(BipartiteGraph graph) {
 	}
 }
 
-public double getPopularityByLoad(BipartiteGraph graph){
+public double getPopularityByLoad(Simulator graph){
 	int connections = 0;
 	for (Platform p: graph.platforms) {
 		connections += p.getLoad(graph);
@@ -126,7 +126,7 @@ public double getPopularityByLoad(BipartiteGraph graph){
 	return getLoad(graph) / connections;
 }
 
-public double getPopularityByPressure(BipartiteGraph graph){
+public double getPopularityByPressure(Simulator graph){
 	int connections = 0;
 	for (Platform p: graph.platforms) {
 		connections += p.getPressure();

@@ -1,6 +1,6 @@
 package simulacron.strategy.fate;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
 import simulacron.strategy.AbstractStrategy;
@@ -20,7 +20,7 @@ public KillPlatform() {
 }
 
 @Override
-public void evolve(BipartiteGraph graph, Fate agent) {
+public void evolve(Simulator graph, Fate agent) {
 	if (graph.getNumPlatforms() > 0) {
 		Platform a = graph.platforms.get(graph.random.nextInt(graph.getNumPlatforms()));
 		graph.removeEntity(graph.platforms, a);

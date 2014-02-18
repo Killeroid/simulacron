@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import sim.field.network.Edge;
 import sim.util.Bag;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Service;
 import simulacron.strategy.AbstractStrategy;
@@ -32,7 +32,7 @@ public Split(String n, double r) {
 
 
 @Override
-public void evolve(BipartiteGraph graph, Platform platform) {
+public void evolve(Simulator graph, Platform platform) {
 	split_Part(graph, platform);
 }
 
@@ -44,7 +44,7 @@ public void evolve(BipartiteGraph graph, Platform platform) {
  * 
  * @param graph
  */
-private void split_Part(BipartiteGraph graph, Platform platform) {
+private void split_Part(Simulator graph, Platform platform) {
 	Bag edges = graph.bipartiteNetwork.getEdges(this, null); // read-only!
 	ArrayList<App> ents = new ArrayList<App>();
 	for (Object o : edges) {

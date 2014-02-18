@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import sim.field.network.Edge;
 import sim.util.Bag;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Entity;
 import simulacron.model.Service;
@@ -34,7 +34,7 @@ public class helpers {
 	 * and the other entities connected to it if its services were 
 	 * updated to x services
 	 */
-	public static int countLinks(Platform platform, List<Service> servs, BipartiteGraph graph) {
+	public static int countLinks(Platform platform, List<Service> servs, Simulator graph) {
 		// the graph is undirected, thus EdgesIn = EdgesOut
 		Platform p = new Platform(platform);
 		p.setServices(servs);
@@ -64,7 +64,7 @@ public class helpers {
 
 
 
-	public static BipartiteGraph splitPlatform(BipartiteGraph graph, Platform platform) {
+	public static Simulator splitPlatform(Simulator graph, Platform platform) {
 		return splitPlatform(graph, platform, graph.random.nextInt(platform.getSize()));
 	}
 
@@ -73,7 +73,7 @@ public class helpers {
 	 * with those services and then adds that platform to the current population 
 	 * and then returns the new platform
 	 */
-	public static BipartiteGraph splitPlatform(BipartiteGraph graph, Platform platform, int ratio) {
+	public static Simulator splitPlatform(Simulator graph, Platform platform, int ratio) {
 		if (graph.getNumPlatforms() <= graph.getMaxPlatforms()) {
 			Bag edges = graph.bipartiteNetwork.getEdges(platform, null); // read-only!
 			int splitIndex = 0;
@@ -119,7 +119,7 @@ public class helpers {
 	 * Clones the platform, adds it to the population
 	 * and then returns the updated graph
 	 */
-	public static BipartiteGraph clonePlatform(BipartiteGraph graph, Platform platform) {
+	public static Simulator clonePlatform(Simulator graph, Platform platform) {
 		if (graph.getNumPlatforms() <= graph.getMaxPlatforms()) {
 			String kind = platform.getKind();
 			Platform newPlatform = graph.createPlatform(kind);
@@ -138,7 +138,7 @@ public class helpers {
 	 * services in the two parents platforms.The combination is done with 
 	 * two ratios randomly generated. Returns the new platform
 	 */
-	public static BipartiteGraph recombinePlatforms(BipartiteGraph graph, Platform platformA, Platform platformB) {
+	public static Simulator recombinePlatforms(Simulator graph, Platform platformA, Platform platformB) {
 		return recombinePlatforms(graph, platformA, platformB, graph.random.nextInt(platformA.getSize()), 
 				graph.random.nextInt(platformB.getSize()), "Created by: Random Recombination");
 	}
@@ -149,11 +149,11 @@ public class helpers {
 	 * the two ratios Returns the new platform
 	 */
 
-	public static BipartiteGraph recombinePlatforms(BipartiteGraph graph, Platform platformA, Platform platformB, int ratioA, int ratioB) {
+	public static Simulator recombinePlatforms(Simulator graph, Platform platformA, Platform platformB, int ratioA, int ratioB) {
 		return recombinePlatforms(graph, platformA, platformB, ratioA, ratioB, "Created by: Recombination");
 	}
 
-	public static BipartiteGraph recombinePlatforms(BipartiteGraph graph, Platform platformA, Platform platformB, 
+	public static Simulator recombinePlatforms(Simulator graph, Platform platformA, Platform platformB, 
 			int ratioA, int ratioB, String action) {
 		if (graph.getNumPlatforms() <= graph.getMaxPlatforms()) {
 			//String kind = platformA.getKind();
@@ -190,16 +190,16 @@ public class helpers {
 		return graph;
 	}
 
-	public static BipartiteGraph killPlatform(BipartiteGraph graph, Platform platform) {
+	public static Simulator killPlatform(Simulator graph, Platform platform) {
 		graph.removeEntity(graph.platforms, platform);
 		return graph;
 	}
 
-	public static ArrayList<Platform> getPlatforms(BipartiteGraph graph) {
+	public static ArrayList<Platform> getPlatforms(Simulator graph) {
 		return graph.platforms;
 	}
 
-	public static BipartiteGraph connectAllApps(BipartiteGraph graph) {
+	public static Simulator connectAllApps(Simulator graph) {
 		graph.removeAllEdges(); //Start with a clean slate
 		for (App a : graph.apps) {
 			Bag needLinks = new Bag(a.getServices());
@@ -223,7 +223,7 @@ public class helpers {
 		return graph;
 	}
 
-	public static Boolean killGraph(BipartiteGraph graph) {
+	public static Boolean killGraph(Simulator graph) {
 		Steppable kill = new Steppable() {
 			public void step(SimState state) {
 				state.kill();
@@ -233,13 +233,13 @@ public class helpers {
 		return graph.schedule.scheduleOnce(graph.schedule.getTime(), kill);
 	}
 
-	public static Platform getPlatform(int ID, BipartiteGraph graph) {
+	public static Platform getPlatform(int ID, Simulator graph) {
 		Platform p = new Platform(ID);
 		//Platform p = ((Platform)new Entity(ID));
-		return BipartiteGraph.getElement(graph.platforms, p);
+		return Simulator.getElement(graph.platforms, p);
 	}
 
-	public static BipartiteGraph mutate(BipartiteGraph graph, Platform platform, int ratio) {
+	public static Simulator mutate(Simulator graph, Platform platform, int ratio) {
 		Bag edges = graph.bipartiteNetwork.getEdges(platform, null);
 		ArrayList<Service> sortedServices = platform.sortServices(edges);
 		int splitIndex;
@@ -265,7 +265,7 @@ public class helpers {
 	}
 	
 
-	public static BipartiteGraph recombineBest(BipartiteGraph graph, Platform platform) {
+	public static Simulator recombineBest(Simulator graph, Platform platform) {
 		Bag platforms = new Bag(graph.platforms);
 		platforms.sort(new Comparator<Entity>() {
 
@@ -293,7 +293,7 @@ public class helpers {
 		return graph;
 	}
 
-	public static BipartiteGraph recombineWorst(BipartiteGraph graph, Platform platform) {
+	public static Simulator recombineWorst(Simulator graph, Platform platform) {
 		Bag platforms = new Bag(graph.platforms);
 		platforms.sort(new Comparator<Entity>() {
 
@@ -318,7 +318,7 @@ public class helpers {
 		return graph;
 	}
 
-	public static BipartiteGraph recombineBestWorst(BipartiteGraph graph) {
+	public static Simulator recombineBestWorst(Simulator graph) {
 		Bag platforms = new Bag(graph.platforms);
 		platforms.sort(new Comparator<Entity>() {
 
@@ -349,12 +349,12 @@ public class helpers {
 		return graph;
 	}
 
-	public static BipartiteGraph replaceServices(BipartiteGraph graph, Platform platform, List<Service> services) {
+	public static Simulator replaceServices(Simulator graph, Platform platform, List<Service> services) {
 		if (services.size() > 0) {
 			platform.getServices().clear();
 			for (Service s: services) {
 				if (platform.getSize() < graph.getPlatformMaxLoad()) {
-					BipartiteGraph.addUnique(platform.services, s);
+					Simulator.addUnique(platform.services, s);
 				} else {
 					break;
 				}
@@ -365,12 +365,12 @@ public class helpers {
 		return graph;
 	}
 	
-	public static BipartiteGraph addServices(BipartiteGraph graph, Platform platform, List<Service> services) {
+	public static Simulator addServices(Simulator graph, Platform platform, List<Service> services) {
 		if (services.size() > 0) {
 			
 			for (Service s: services) {
 				if (platform.getSize() < graph.getPlatformMaxLoad()) {
-					BipartiteGraph.addUnique(platform.services, s);
+					Simulator.addUnique(platform.services, s);
 				} else {
 					break;
 				}
@@ -381,7 +381,7 @@ public class helpers {
 		return graph;
 	}
 	
-	public static BipartiteGraph removeServices(BipartiteGraph graph, Platform platform, List<Service> services) {
+	public static Simulator removeServices(Simulator graph, Platform platform, List<Service> services) {
 		if (services.size() > 0) {
 			platform.services.removeAll(services);
 			platform.action = "remove_services";
@@ -390,12 +390,12 @@ public class helpers {
 		return graph;
 	}
 
-	public static BipartiteGraph inheritPlatform(BipartiteGraph graph, Platform platformA, Platform platformB) {
+	public static Simulator inheritPlatform(Simulator graph, Platform platformA, Platform platformB) {
 		List<Service> services = platformB.services.subList(0, platformB.services.size());
 		return replaceServices(graph, platformA, services);
 	}
 
-	public static BipartiteGraph recombineBiggest(BipartiteGraph graph, Platform platform) {
+	public static Simulator recombineBiggest(Simulator graph, Platform platform) {
 		Bag platforms = new Bag(graph.platforms);
 		platforms.sort(new Comparator<Entity>() {
 
@@ -423,7 +423,7 @@ public class helpers {
 		return graph;
 	}
 
-	public static BipartiteGraph recombineSmallest(BipartiteGraph graph, Platform platform) {
+	public static Simulator recombineSmallest(Simulator graph, Platform platform) {
 		Bag platforms = new Bag(graph.platforms);
 		platforms.sort(new Comparator<Entity>() {
 
@@ -452,7 +452,7 @@ public class helpers {
 		return graph;
 	}
 
-	public static BipartiteGraph recombineBiggestSmallest(BipartiteGraph graph) {
+	public static Simulator recombineBiggestSmallest(Simulator graph) {
 		Bag platforms = new Bag(graph.platforms);
 		platforms.sort(new Comparator<Entity>() {
 
@@ -485,7 +485,7 @@ public class helpers {
 		return graph;
 	}
 
-	public static int connectedPlatforms(BipartiteGraph graph) {
+	public static int connectedPlatforms(Simulator graph) {
 		int connectedPlatforms = 0;
 		for (Platform p: graph.platforms) {
 			if (p.getDegree() > 0) connectedPlatforms++;
@@ -520,7 +520,7 @@ public class helpers {
 	//
 	//}
 	//
-	//public static Map<Object, Map<Integer, List<Platform>>> initsacks(BipartiteGraph graph) {
+	//public static Map<Object, Map<Integer, List<Platform>>> initsacks(Simulator graph) {
 	//	Map<Object, Map<Integer, List<Platform>>> links = new HashMap<Object, Map<Integer, List<Platform>>>();
 	//	Map<App, BigInteger> apps = new SpeciesAndPopulation<App>(graph.apps).encodeEntityList(graph.apps);
 	//	for (App a: apps.keySet()) {
@@ -550,7 +550,7 @@ public class helpers {
 	//	return platforms;
 	//}
 	//
-	//public static Bag getBestPlatforms(BipartiteGraph graph, App e, Bag platforms, Bag success, int index, int depth, int alpha, int beta) {
+	//public static Bag getBestPlatforms(Simulator graph, App e, Bag platforms, Bag success, int index, int depth, int alpha, int beta) {
 	//	if (depth == 0 || index == platforms.size()) {
 	//		return success;
 	//	}
@@ -561,7 +561,7 @@ public class helpers {
 	//	return platforms;
 	//}
 	//
-	//public static ArrayList<Service> getbestServices(BipartiteGraph graph, App e) {
+	//public static ArrayList<Service> getbestServices(Simulator graph, App e) {
 	//	final Entity app = ((Entity)e);
 	//	ArrayList<Service> services = new ArrayList<Service>();
 	//	

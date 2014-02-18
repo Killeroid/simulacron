@@ -14,7 +14,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import sim.engine.Steppable;
 import simulacron.model.App;
 import simulacron.strategy.Strategy;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
@@ -29,27 +29,27 @@ public class Extinction {
 	 * @param The Bipartite graph to run the extinction sequence on
 	 * @param The number of times to run every combination of strategies
 	 */
-	public static Map<String, double[]> runExtinctionSequence(BipartiteGraph graph) {
+	public static Map<String, double[]> runExtinctionSequence(Simulator graph) {
 		return runExtinctionSequence(graph, Configuration.getInt("extinction.runs", 10));
 	}
 
 
-	public static Map<String, double[]> runExtinctionSequence(BipartiteGraph graph, int trials) {
+	public static Map<String, double[]> runExtinctionSequence(Simulator graph, int trials) {
 		//System.out.println("Do we ever get here0.2");
 		ArrayList<Strategy<? extends Steppable>> killStrats = null;
 		ArrayList<Strategy<? extends Steppable>> linkStrats = null;
 		ArrayList<Strategy<? extends Steppable>> linkFateStrats = null;
 
 		if (Configuration.contains("extinction.kill")) {
-			killStrats = BipartiteGraph.getExtinctionStrategies("kill");
+			killStrats = Simulator.getExtinctionStrategies("kill");
 		}
 
 		if (Configuration.contains("extinction.link")) {
-			linkStrats = BipartiteGraph.getExtinctionStrategies("link");
+			linkStrats = Simulator.getExtinctionStrategies("link");
 		}
 
 		if (Configuration.contains("extinction.linkFate")) {
-			linkFateStrats = BipartiteGraph.getExtinctionStrategies("linkFate");
+			linkFateStrats = Simulator.getExtinctionStrategies("linkFate");
 		}
 
 		if (killStrats == null || (linkStrats == null && linkFateStrats == null)) {
@@ -79,7 +79,7 @@ public class Extinction {
 		return resultsMap;
 	}
 	
-	public static Map<String, Double> returnRobustnessAvg(BipartiteGraph graph, int trials) {
+	public static Map<String, Double> returnRobustnessAvg(Simulator graph, int trials) {
 		Map<String, double[]> resultsMap = runExtinctionSequence(graph, trials);
 		Map<String, Double> results = new HashMap<String, Double>();
 		for (Map.Entry<String, double[]> pair: resultsMap.entrySet()) {
@@ -89,7 +89,7 @@ public class Extinction {
 		
 	}
 	
-	public static String ExtinctionReport(BipartiteGraph graph, int trials){
+	public static String ExtinctionReport(Simulator graph, int trials){
 		Map<String, double[]> resultsMap = runExtinctionSequence(graph, trials);
 		String result = System.getProperty("line.separator");
 		result += "  Linking - Killing:\t [Min, Q1, Q2, Q3, Max, Mean, Avg, Std Dev]" + System.getProperty("line.separator");
@@ -105,7 +105,7 @@ public class Extinction {
 	 * Run non fate linking strategies
 	 */
 	@SuppressWarnings("unchecked")
-	static Map<String, double[]> linking(BipartiteGraph graph, 
+	static Map<String, double[]> linking(Simulator graph, 
 			ArrayList<Strategy<? extends Steppable>> linkStrats, Strategy<? extends Steppable> kill, int trials, boolean fate) {
 
 		Map<String, double[]> resultsMap = new HashMap<String, double[]>();
@@ -117,7 +117,7 @@ public class Extinction {
 			statResults = new double[8];
 			stats.clear();
 			for (int count = 0; count < trials; count++) {
-				BipartiteGraph clone = graph.extinctionClone();
+				Simulator clone = graph.extinctionClone();
 
 
 				double robustness = 0;

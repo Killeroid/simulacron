@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 
 
 public class AppReproductionWithPossibility extends ReproStrategy<App> {
@@ -21,7 +21,7 @@ public AppReproductionWithPossibility(double possiblility, ReproStrategy<App> re
 	}
 
 	@Override
-	public List<App> reproduce(App parent, BipartiteGraph state) {
+	public List<App> reproduce(App parent, Simulator state) {
 		if(state.random.nextDouble() < possibility){
 			return reproducer.reproduce(parent, state);
 		}
@@ -30,7 +30,7 @@ public AppReproductionWithPossibility(double possiblility, ReproStrategy<App> re
 	}
 
     @Override
-    public void evolve(BipartiteGraph graph, App agent) {
+    public void evolve(Simulator graph, App agent) {
       reproduce(agent, graph);
     }
 

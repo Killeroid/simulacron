@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import sim.util.Bag;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
 import simulacron.model.Service;
@@ -32,7 +32,7 @@ public class KillPlatformsWithServiceExact  extends AbstractStrategy<Fate> {
 	}
 
 	@Override
-	public void evolve(BipartiteGraph graph, Fate agent) {
+	public void evolve(Simulator graph, Fate agent) {
 		Service backdoor = graph.services.get(graph.random().nextInt(graph.getNumServices()));
 		for (int i = graph.getNumPlatforms() - 1; i >= 0; i--) {
 			int j = Collections.binarySearch(graph.platforms.get(i).getServices(), backdoor);

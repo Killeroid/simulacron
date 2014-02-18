@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.ArrayList;
 
 import sim.util.Bag;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Service;
 import simulacron.strategy.util.Metrics;
@@ -27,22 +27,22 @@ public KillFates() {}
 public static Map<String, Class[]> getKillingMethods() {
 	Map<String, Class[]> results = new HashMap<String, Class[]>();
 	Class[] args = new Class[2];
-	args[0] = BipartiteGraph.class;
+	args[0] = Simulator.class;
 	args[1] = int.class;
 	results.put("randomExact", args);
 	args = new Class[2];
-	args[0] = BipartiteGraph.class;
+	args[0] = Simulator.class;
 	args[1] = int.class;
 	results.put("obsolescenceExact", args);
 	args = new Class[2];
-	args[0] = BipartiteGraph.class;
+	args[0] = Simulator.class;
 	args[1] = int.class;
 	results.put("unattendedExact", args);
 	return results;
 }
 
 
-public static void disconnected(BipartiteGraph graph) {
+public static void disconnected(Simulator graph) {
 	Set<Platform> platformToKill = new HashSet<Platform>();
 	for (Platform platform : graph.platforms) {
 		if (platform.getDegree() == 0) {
@@ -62,7 +62,7 @@ public static void disconnected(BipartiteGraph graph) {
  * @param graph
  * @param populationKillRatio
  */
-public static void random(BipartiteGraph graph, double populationKillRatio) {
+public static void random(Simulator graph, double populationKillRatio) {
 	for (int i = 0; i < graph.getNumPlatforms() * populationKillRatio; i++) {
 		Platform killed = graph.platforms.get(graph.random().nextInt(graph.getNumPlatforms()));
 		graph.removeEntity(graph.platforms, killed);
@@ -77,7 +77,7 @@ public static void random(BipartiteGraph graph, double populationKillRatio) {
  * @param graph
  * @param amount
  */
-public static void randomExact(BipartiteGraph graph, int amount) {
+public static void randomExact(Simulator graph, int amount) {
 	for (int i = 0; i < amount; i++) {
 		Platform killed = graph.platforms.get(graph.random().nextInt(graph.getNumPlatforms()));
 		graph.removeEntity(graph.platforms, killed);
@@ -94,7 +94,7 @@ public static void randomExact(BipartiteGraph graph, int amount) {
  * @param backdoor
  * @param populationKillRatio
  */
-public static void backdoor(BipartiteGraph graph, Service backdoor, double populationKillRatio) {
+public static void backdoor(Simulator graph, Service backdoor, double populationKillRatio) {
 	int counter = (int)(graph.getNumPlatforms() * populationKillRatio) + 1;
 	for (int i = graph.getNumPlatforms() - 1; i >= 0; i--) {
 		if (Collections.binarySearch(graph.platforms.get(i).getServices(), backdoor) >= 0) {
@@ -117,7 +117,7 @@ public static void backdoor(BipartiteGraph graph, Service backdoor, double popul
  * @param backdoor
  * @param amount
  */
-public static void backdoor(BipartiteGraph graph, Service backdoor, int amount) {
+public static void backdoor(Simulator graph, Service backdoor, int amount) {
 	for (int i = graph.getNumPlatforms() - 1; i >= 0; i--) {
 		if (Collections.binarySearch(graph.platforms.get(i).getServices(), backdoor) >= 0) {
 			Platform killed = graph.platforms.get(i);
@@ -139,7 +139,7 @@ public static void backdoor(BipartiteGraph graph, Service backdoor, int amount) 
  * @param populationKillRatio
  */
 
-public static void obsolescence(BipartiteGraph graph, double populationKillRatio) {
+public static void obsolescence(Simulator graph, double populationKillRatio) {
 	int counter = (int)(graph.getNumPlatforms() * populationKillRatio);
 	Bag platforms = new Bag(graph.platforms);
 	platforms.sort(new Comparator() {
@@ -163,7 +163,7 @@ public static void obsolescence(BipartiteGraph graph, double populationKillRatio
  * @param graph
  * @param amount
  */
-public static void obsolescenceExact(BipartiteGraph graph, int amount) {
+public static void obsolescenceExact(Simulator graph, int amount) {
 	Bag platforms = new Bag(graph.platforms);
 	platforms.sort(new Comparator() {
 
@@ -186,7 +186,7 @@ public static void obsolescenceExact(BipartiteGraph graph, int amount) {
  * @param graph
  * @param populationKillRatio
  */
-public static void unattended(BipartiteGraph graph, double populationKillRatio) {
+public static void unattended(Simulator graph, double populationKillRatio) {
 	Service backdoor = graph.services.get(graph.random().nextInt(graph.getNumServices()));
 	int counter = (int)(graph.getNumPlatforms() * populationKillRatio);
 	for (int i = graph.getNumPlatforms() - 1; i >= 0; i--) {
@@ -210,7 +210,7 @@ public static void unattended(BipartiteGraph graph, double populationKillRatio) 
  * @param graph
  * @param amount
  */
-public static void unattendedExact(BipartiteGraph graph, int amount) {
+public static void unattendedExact(Simulator graph, int amount) {
 	Service backdoor = graph.services.get(graph.random().nextInt(graph.getNumServices()));
 	for (int i = graph.getNumPlatforms() - 1; i >= 0; i--) {
 		int j = Collections.binarySearch(graph.platforms.get(i).getServices(), backdoor);
@@ -226,7 +226,7 @@ public static void unattendedExact(BipartiteGraph graph, int amount) {
 	}
 }
 
-public static ArrayList getContains(BipartiteGraph graph, Service srv) {
+public static ArrayList getContains(Simulator graph, Service srv) {
 	double platformTotal = graph.platforms.size();
 	ArrayList<Platform> contains = new ArrayList<Platform>();
 	for (Platform platform : graph.platforms) {
@@ -237,7 +237,7 @@ public static ArrayList getContains(BipartiteGraph graph, Service srv) {
 	return contains;
 }
 
-public static void killBySpecies(BipartiteGraph graph, int amount) {
+public static void killBySpecies(Simulator graph, int amount) {
 	Service backdoor = graph.services.get(graph.random().nextInt(graph.getNumServices()));
 	while (graph.getNumPlatforms() > 0) {
 		ArrayList killplatforms = getContains(graph, backdoor);
@@ -260,7 +260,7 @@ public static void killBySpecies(BipartiteGraph graph, int amount) {
  * 
  * @param graph
  */
-public static void concentrationRandom(BipartiteGraph graph) {
+public static void concentrationRandom(Simulator graph) {
 	if (graph.getNumPlatforms() == 0) {
 		Log.debug("No more platforms");
 		return;
@@ -269,31 +269,31 @@ public static void concentrationRandom(BipartiteGraph graph) {
 	graph.removeEntity(graph.platforms, condemned);
 	Platform augmented = graph.platforms.get(graph.random().nextInt(graph.getNumPlatforms()));
 	for (Service s : condemned.getServices()) {
-		BipartiteGraph.addUnique(augmented.getServices(), s);
+		Simulator.addUnique(augmented.getServices(), s);
 	}
 	Log.debug("Platform <" + condemned + "> has been killed by Concentration and its Services <"
 	        + condemned.getServices() + "> added to Platform <" + augmented + ">");
 }
 
 
-public static void concentrationSmallInBig(BipartiteGraph graph) {
+public static void concentrationSmallInBig(Simulator graph) {
 	Platform condemned = Metrics.getSmallestPlatform(graph);
 	graph.removeEntity(graph.platforms, condemned);
 	Platform augmented = Metrics.getBiggestPlatform(graph);
 	for (Service s : condemned.getServices()) {
-		BipartiteGraph.addUnique(augmented.getServices(), s);
+		Simulator.addUnique(augmented.getServices(), s);
 	}
 	Log.debug("Platform <" + condemned + "> has been killed by Concentration2 and its Services <"
 	        + condemned.getServices() + "> added to Platform <" + augmented + ">");
 }
 
 
-public static void concentrationSmallInSmall(BipartiteGraph graph) {
+public static void concentrationSmallInSmall(Simulator graph) {
 	Platform condemned = Metrics.getSmallestPlatform(graph);
 	graph.removeEntity(graph.platforms, condemned);
 	Platform augmented = Metrics.getSmallestPlatform(graph);
 	for (Service s : condemned.getServices()) {
-		BipartiteGraph.addUnique(augmented.getServices(), s);
+		Simulator.addUnique(augmented.getServices(), s);
 	}
 	Log.debug("Platform <" + condemned + "> has been killed by Concentration3 and its Services <"
 	        + condemned.getServices() + "> added to Platform <" + augmented + ">");
@@ -308,7 +308,7 @@ public static void concentrationSmallInSmall(BipartiteGraph graph) {
  * @param maxServices
  * @param populationKillRatio
  */
-public static void gasFactory(BipartiteGraph graph, int maxServices, double populationKillRatio) {
+public static void gasFactory(Simulator graph, int maxServices, double populationKillRatio) {
 	int counter = (int)(graph.getNumPlatforms() * populationKillRatio);
 	for (int i = graph.getNumPlatforms() - 1; i >= 0; i--) {
 		if (graph.platforms.get(i).getSize() >= maxServices) {
@@ -330,7 +330,7 @@ public static void gasFactory(BipartiteGraph graph, int maxServices, double popu
  * @param maxServices
  * @param amount
  */
-public static void gasFactoryExact(BipartiteGraph graph, int maxServices, int amount) {
+public static void gasFactoryExact(Simulator graph, int maxServices, int amount) {
 	for (int i = graph.getNumPlatforms() - 1; i >= 0; i--) {
 		if (graph.platforms.get(i).getSize() >= maxServices) {
 			Platform killed = graph.platforms.get(i);
@@ -349,7 +349,7 @@ public static void gasFactoryExact(BipartiteGraph graph, int maxServices, int am
  * 
  * @param graph
  */
-public static void serveOrDie(BipartiteGraph graph) {
+public static void serveOrDie(Simulator graph) {
 	Bag platforms = new Bag(graph.platforms);
 	for (Object platform : platforms) {
 		if (!((Platform)platform).isAlive()) {

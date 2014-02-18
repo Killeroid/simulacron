@@ -52,14 +52,14 @@ public double getRedundancy() {
 	return redundancy > 0 ? redundancy : 0;
 }
 
-public void setRedundancy(BipartiteGraph graph) {
+public void setRedundancy(Simulator graph) {
 	redundancy = ((double)degree) / graph.getNumPlatforms();
 }
 
 public App(int id, List<Service> servs, Strategy<App> strategy) {
 	super(id, strategy);
 	for (Service s : servs) {
-		BipartiteGraph.addUnique(services, s);
+		Simulator.addUnique(services, s);
 	}
 }
 
@@ -74,11 +74,11 @@ public App(App app) {
 }
 
 
-public void init(String entityId, BipartiteGraph graph) {
+public void init(String entityId, Simulator graph) {
 	super.init(entityId, graph);
 	// int nSer = Configuration.getInt(entityId + ".services");
 	for (Service s : graph.nextBundle()) {
-		BipartiteGraph.addUnique(services, s);
+		Simulator.addUnique(services, s);
 	}
 }
 
@@ -90,7 +90,7 @@ public void init(String entityId, BipartiteGraph graph) {
 @SuppressWarnings("unchecked")
 @Override
 public void step(SimState state) {
-	BipartiteGraph graph = (BipartiteGraph)state;
+	Simulator graph = (Simulator)state;
 	strategy.evolve(graph, this);
 
 	setRedundancy(graph);

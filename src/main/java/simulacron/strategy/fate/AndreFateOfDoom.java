@@ -2,7 +2,7 @@ package simulacron.strategy.fate;
 
 
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
 import simulacron.strategy.AbstractStrategy;
@@ -20,7 +20,7 @@ public AndreFateOfDoom() {
 
 @SuppressWarnings("unchecked")
 @Override
-public void evolve(BipartiteGraph graph, Fate agent) {
+public void evolve(Simulator graph, Fate agent) {
 	// managePopulation(graph);
 	/*
 	 * Bag platforms = new Bag(graph.platforms); platforms.sort(new Comparator() {
@@ -47,7 +47,7 @@ public void evolve(BipartiteGraph graph, Fate agent) {
 }
 
 
-public void managePopulation(BipartiteGraph graph) {
+public void managePopulation(Simulator graph) {
 	double killCreateStep = 0.1;
 	double killThreshold = 0.3;
 	double createThreshold = 0.3;

@@ -1,6 +1,6 @@
 package simulacron.strategy.fate;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
 import simulacron.strategy.AbstractStrategy;
@@ -18,7 +18,7 @@ public gpFate() {
 }
 
 @Override
-public void evolve(BipartiteGraph graph, Fate agent) {
+public void evolve(Simulator graph, Fate agent) {
 	String program = "(service_shove (simulacron_getMaxApps float_eq (simulacron_atMaxPlatforms) (platform_shove (integer_dup)) " 
 			+ "(float_max exec_if simulacron_getPlatformSize)) (((exec_eq platform_rot platform_shove) simulacron_recombineBiggest) " 
 			+ "((integer_gt ((integer_min) (platform_getAge) simulacron_inheritPlatform)) simulacron_split_rand simulacron_recombineBestWorst) " 

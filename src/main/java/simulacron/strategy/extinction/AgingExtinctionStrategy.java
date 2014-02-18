@@ -1,6 +1,6 @@
 package simulacron.strategy.extinction;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 
 
@@ -16,7 +16,7 @@ public AgingExtinctionStrategy(int expectedAge) {
 	}
 
 
-public boolean die(Entity e, BipartiteGraph graph) {
+public boolean die(Entity e, Simulator graph) {
 	long steps = graph.getCurCycle();
 	if (steps - e.getBirthCycle() >= expectedAge) {
 			return true;
@@ -28,7 +28,7 @@ public boolean die(Entity e, BipartiteGraph graph) {
 
 
 @Override
-public void evolve(BipartiteGraph graph, Entity agent) {
+public void evolve(Simulator graph, Entity agent) {
 	agent.dead = die(agent, graph);
 
 }

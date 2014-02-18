@@ -29,7 +29,7 @@ public class BestFitFirst extends AbstractStrategy<App> {
 	}
 
 
-	public void evolve(BipartiteGraph graph, App a) {
+	public void evolve(Simulator graph, App a) {
 		ArrayList<Service> needLinks = new ArrayList<Service>(a.getServices());
 		Bag platforms = new Bag(graph.platforms);
 //		Bag platforms = new Bag();
@@ -71,7 +71,7 @@ public class BestFitFirst extends AbstractStrategy<App> {
 		a.setRedundancy(graph);
 	}
 	
-	private TreeMap<Integer, Object[]> sortConnectable(BipartiteGraph graph, App a, ArrayList<Service> needLinks, Bag platforms) {
+	private TreeMap<Integer, Object[]> sortConnectable(Simulator graph, App a, ArrayList<Service> needLinks, Bag platforms) {
 		TreeMap<Integer, Object[]> platformsSorted = new TreeMap<Integer, Object[]>();
 		if (needLinks.size() > 0 && platforms.size() > 0) {
 			for (Object p : platforms) {
@@ -90,11 +90,11 @@ public class BestFitFirst extends AbstractStrategy<App> {
 	/*
 	 * Sort a list of platforms by the number of available links it can provide out of the needed links
 	 */
-	private TreeMap<Integer, Object[]> sortByConnectable(BipartiteGraph graph, ArrayList<Service> needLinks, Bag platforms) {
+	private TreeMap<Integer, Object[]> sortByConnectable(Simulator graph, ArrayList<Service> needLinks, Bag platforms) {
 		TreeMap<Integer, Object[]> platformsSorted = new TreeMap<Integer, Object[]>();
 		if (needLinks.size() > 0 && platforms.size() > 0) {
 			for (Object p : platforms) {
-				ArrayList<Service> connectableServices = BipartiteGraph.removableServices(needLinks, ((Platform)p).getServices(), 
+				ArrayList<Service> connectableServices = Simulator.removableServices(needLinks, ((Platform)p).getServices(), 
 						(graph.getPlatformMaxLoad() - ((Platform)p).getDegree()));
 				// Platforms with the highest number of connectable services first
 				if (connectableServices.size() > 0) {

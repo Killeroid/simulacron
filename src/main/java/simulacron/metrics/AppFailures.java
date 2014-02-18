@@ -1,17 +1,17 @@
 package simulacron.metrics;
 
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 
 
 public class AppFailures {
 
-BipartiteGraph graph;
+Simulator graph;
 
 int totalAliveApps = 0;
 
 
-public AppFailures(BipartiteGraph graph) {
+public AppFailures(Simulator graph) {
 	this.graph = graph;
 }
 

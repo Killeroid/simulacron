@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 
 import simulacron.BipartiteGraphWithUI;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.util.config.Configuration;
 /**
@@ -22,7 +22,7 @@ import simulacron.util.config.Configuration;
  * during a single simulation run, and record the snapshots at the time points 
  * when there is a explicit invocation to the {@link recordSnapshot} method. 
  * Here a snapshot means a set of values for the specified variables.
- * (A simple way here is to invoke it in the {@link BipartiteGraphWithUI.step})
+ * (A simple way here is to invoke it in the {@link SimulatorWithUI.step})
  * After each simulation run (or during it, of course) we can retrieve a list of
  * all the values recorded for a specific variable at all the steps. 
  * After several runs, we can also calculate the average value at each step 
@@ -95,7 +95,7 @@ public static final String MEAN_NUM_PLATFORM_PER_SPECIE = "MeanNumPlatformPerSpe
 	public List<Long> steps = new ArrayList<Long>();
 	
 	List<String> register = null;
-	BipartiteGraph graph = null;
+	Simulator graph = null;
 	
 	Map<String, List<Object>> history = new HashMap<String, List<Object>>();
 	
@@ -118,7 +118,7 @@ AppFailures appFailures = null;
      * @param graph
      * @param args 
      */
-	public MetricsMonitor(BipartiteGraph graph, String... args){
+	public MetricsMonitor(Simulator graph, String... args){
 		this.graph = graph;
 		register = Arrays.asList(args);
 		
@@ -127,7 +127,7 @@ AppFailures appFailures = null;
 	}
     
 
-    public MetricsMonitor(BipartiteGraph graph, List<String> paras){
+    public MetricsMonitor(Simulator graph, List<String> paras){
         this.graph = graph;
         this.register = new ArrayList(paras);
         _init();
@@ -259,7 +259,7 @@ public Map<String, Object> getSnapshot() {
      * It decides what methods to use, based on the configuration file
      * @param graph
      */
-	public static MetricsMonitor createMetricsInstance(BipartiteGraph graph){
+	public static MetricsMonitor createMetricsInstance(Simulator graph){
 //		MetricsMonitor metrics = new MetricsMonitor(graph, 
 //				MetricsMonitor.SHANNON_PLATFORM, 
 //				MetricsMonitor.GS_PLATFORM,

@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import sim.util.Bag;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Service;
 import simulacron.util.Log;
@@ -17,14 +17,14 @@ public class MutationFates {
 public MutationFates() {}
 
 
-public static void bugCorrected(BipartiteGraph graph) {
+public static void bugCorrected(Simulator graph) {
 	Service obsolete = graph.services.get(graph.random().nextInt(graph.getNumServices()));
 	Service replacement = graph.services.get(graph.random().nextInt(graph.getNumServices()));
 	for (Platform platform : graph.platforms) {
 		int i = Collections.binarySearch(platform.getServices(), obsolete);
 		if (i >= 0) {
 			platform.getServices().remove(i);
-			BipartiteGraph.addUnique(platform.getServices(), replacement);
+			Simulator.addUnique(platform.getServices(), replacement);
 			Log.debug("Platform <" + platform + "> has mutated: Service <" + obsolete
 			    + "> replaced with Service <" + replacement + "> by BugCorrected");
 		}
@@ -32,7 +32,7 @@ public static void bugCorrected(BipartiteGraph graph) {
 }
 
 
-public static void upgrade(BipartiteGraph graph, int upgradedServicesNumber) {
+public static void upgrade(Simulator graph, int upgradedServicesNumber) {
 	Platform upgradedPlatform = graph.platforms.get(graph.random().nextInt(graph.getNumPlatforms()));
 	List<Service> removedServices = new ArrayList<Service>();
 	for (int i = 0; i < Math.min(upgradedServicesNumber, upgradedPlatform.getSize()); i++) {
@@ -46,7 +46,7 @@ public static void upgrade(BipartiteGraph graph, int upgradedServicesNumber) {
 	upgradedPlatform.getServices().removeAll(removedServices);
 	// upgradedPlatform.getServices().addAll(upgradedServices);
 	for (Service service : upgradedServices) {
-		BipartiteGraph.addUnique(upgradedPlatform.getServices(), service);
+		Simulator.addUnique(upgradedPlatform.getServices(), service);
 	}
 	Log.debug("Platform <" + upgradedPlatform + "> has upgraded Services <" + removedServices
 	    + "> into <"
@@ -54,7 +54,7 @@ public static void upgrade(BipartiteGraph graph, int upgradedServicesNumber) {
 }
 
 
-public static void random(BipartiteGraph graph, double populationSize, double mutationSize) {
+public static void random(Simulator graph, double populationSize, double mutationSize) {
 	int counterPopulation = Math.max((int)(graph.getNumPlatforms() * populationSize), 1);
 	Bag platforms = new Bag(graph.platforms);
 	platforms.shuffle(graph.random());
@@ -71,7 +71,7 @@ public static void random(BipartiteGraph graph, double populationSize, double mu
 				int initialServiceSize = ((Platform)platform).getSize();
 				while (initialServiceSize == ((Platform)platform).getSize()) {
 					Service replacement = graph.services.get(graph.random().nextInt(graph.getNumServices()));
-					BipartiteGraph.addUnique(((Platform)platform).getServices(), replacement);
+					Simulator.addUnique(((Platform)platform).getServices(), replacement);
 				}
 				counterMutation--;
 			}

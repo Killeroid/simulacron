@@ -64,7 +64,7 @@ public class Service implements Comparable<Service> {
 		return name + ":" + version + ":" +state;
 	}
 
-	public double getPopularity(BipartiteGraph graph) {
+	public double getPopularity(Simulator graph) {
 		double appTotal = graph.apps.size();
 		double appUsingNumber = 0;
 		for (App app : graph.apps) {
@@ -75,7 +75,7 @@ public class Service implements Comparable<Service> {
 		return appUsingNumber / appTotal;
 	}
 
-	public double getAvailability(BipartiteGraph graph) {
+	public double getAvailability(Simulator graph) {
 		double platformTotal = graph.platforms.size();
 		double platformUsingNumber = 0;
 		for (Platform platform : graph.platforms) {

@@ -1,7 +1,7 @@
 package simulacron.strategy;
 
 import sim.engine.Steppable;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 
 
 /**
@@ -15,6 +15,6 @@ public NullStrategy() {
 }
 
 @Override
-public void evolve(BipartiteGraph graph, T agent) {}
+public void evolve(Simulator graph, T agent) {}
 
 }

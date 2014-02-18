@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
 import simulacron.model.Service;
@@ -24,7 +24,7 @@ public AddPlatform() {
 
 
 @Override
-public void evolve(BipartiteGraph graph, Fate agent) {
+public void evolve(Simulator graph, Fate agent) {
 	Map<List<Service>, Integer> species = getSpecies(graph);
 	List<Service> p = selectRandomSpecies(species, graph.getNumPlatforms());
 
@@ -36,7 +36,7 @@ public void evolve(BipartiteGraph graph, Fate agent) {
 }
 
 
-protected void clonePlatform(BipartiteGraph graph, List<Service> services) {
+protected void clonePlatform(Simulator graph, List<Service> services) {
 	String kind = graph.platforms.get(0).getKind();
 	Platform platform = graph.createPlatform(kind);
 	platform.setServices(services);
@@ -45,7 +45,7 @@ protected void clonePlatform(BipartiteGraph graph, List<Service> services) {
 }
 
 
-protected void childrenPlatform(BipartiteGraph graph, List<Service> p) {
+protected void childrenPlatform(Simulator graph, List<Service> p) {
 	String kind = graph.platforms.get(0).getKind();
 	Platform platform = graph.createPlatform(kind);
 
@@ -53,7 +53,7 @@ protected void childrenPlatform(BipartiteGraph graph, List<Service> p) {
 	p.remove(graph.random.nextInt(p.size()));
 
 	for (Service s : graph.selectServices(2)) {
-		BipartiteGraph.addUnique(p, s);
+		Simulator.addUnique(p, s);
 	}
 	platform.setServices(p);
 
@@ -74,11 +74,11 @@ protected List<Service> selectRandomSpecies(Map<List<Service>, Integer> distribu
 			list.add(p);
 		}
 	}
-	return list.get(BipartiteGraph.INSTANCE.random.nextInt(list.size()));
+	return list.get(Simulator.INSTANCE.random.nextInt(list.size()));
 }
 
 
-protected Map<List<Service>, Integer> getSpecies(BipartiteGraph graph) {
+protected Map<List<Service>, Integer> getSpecies(Simulator graph) {
 	Map<List<Service>, Integer> map = new HashMap<List<Service>, Integer>();
 
 	for (Platform p : graph.platforms) {

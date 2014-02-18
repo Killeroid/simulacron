@@ -4,19 +4,19 @@ package simulacron.metrics;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 
 
 public class RobustnessRun implements Callable<RobustnessResults> {
 
-BipartiteGraph graph;
+Simulator graph;
 
 Method linkingMethod;
 
 Method killingMethod;
 
 
-public RobustnessRun(BipartiteGraph graph, Method linkingMethod, Method killingMethod) {
+public RobustnessRun(Simulator graph, Method linkingMethod, Method killingMethod) {
 	this.graph = graph;
 	this.linkingMethod = linkingMethod;
 	this.killingMethod = killingMethod;

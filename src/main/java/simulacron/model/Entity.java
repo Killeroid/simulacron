@@ -28,7 +28,7 @@ import simulacron.util.config.Configuration;
 abstract public class Entity implements Steppable, Comparable<Entity> {
 
 /**
- * See BipartiteGraph.start().
+ * See Simulator.start().
  */
 protected int ID;
 
@@ -96,12 +96,12 @@ public int getBirthCycle() {
 }
 
 
-public void init(String entityId, BipartiteGraph graph) {
+public void init(String entityId, Simulator graph) {
 	ID = counter;
 	counter++;
 	kind = entityId;
 	services = new ArrayList<Service>();
-	strategy = (Strategy<? extends Entity>)BipartiteGraph.getStrategy(Configuration.getString(kind
+	strategy = (Strategy<? extends Entity>)Simulator.getStrategy(Configuration.getString(kind
 			+ ".strategy"));
 	degree = 0;
 	dead = false;
@@ -175,7 +175,7 @@ protected void stop() {
 }
 
 
-protected void printoutCurStep(BipartiteGraph g) {
+protected void printoutCurStep(Simulator g) {
 	System.out.println(g.getPrintoutHeader() + toString());
 }
 
@@ -276,7 +276,7 @@ public int countCommonServices(Entity e, Integer[] counter) {
 	return res;
 }
 
-public int countConnectableServices(BipartiteGraph graph, Entity e) {
+public int countConnectableServices(Simulator graph, Entity e) {
 	return graph.returnRealEdgeWeight(this, e, null);
 }
 
@@ -345,7 +345,7 @@ public boolean equals(Object o) {
 
 public void setServices(List<Service> services) {
 	for (Service s : services)
-		BipartiteGraph.addUnique(this.services, s);
+		Simulator.addUnique(this.services, s);
 }
 
 

@@ -5,7 +5,7 @@ package simulacron.metrics;
 
 import simulacron.model.App;
 import simulacron.strategy.Strategy;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
@@ -21,7 +21,7 @@ public class CalcRobustness {
 	 * @param The number of times to run every combination of strategies
 	 */
 
-	BipartiteGraph state;
+	Simulator state;
 	Strategy<App> linkStrat;
 	double[] results; 
 	int runs;
@@ -30,7 +30,7 @@ public class CalcRobustness {
 		runs = trials;
 	}
 
-	public CalcRobustness(BipartiteGraph graph, int trials) {
+	public CalcRobustness(Simulator graph, int trials) {
 		state = graph;
 		linkStrat = (Strategy<App>)state.getStrategy("BestFitFirst");
 		runs = trials;
@@ -43,7 +43,7 @@ public class CalcRobustness {
 	protected void sequence() {
 		System.out.println("Calculating robustness...");
 		for (int count = 0; count < runs; count++) {
-				BipartiteGraph clone = state.extinctionClone();
+				Simulator clone = state.extinctionClone();
 
 
 				double robustness = 0;

@@ -26,7 +26,7 @@ public class LinkingC extends AbstractStrategy<App> {
 	}
 
 
-	public void evolve(BipartiteGraph graph, App e) {
+	public void evolve(Simulator graph, App e) {
 		//Remove all links to app
 		Bag edges = graph.bipartiteNetwork.getEdgesIn(e);
 		for (Object edge : edges) {
@@ -50,7 +50,7 @@ public class LinkingC extends AbstractStrategy<App> {
 			Iterator iterator = platforms.iterator();
 			while((needLinks.size() > 0) && iterator.hasNext()) {
 				Platform p = (Platform)iterator.next();
-				ArrayList<Service> removable = BipartiteGraph.removableServices(needLinks, p.getServices(), 
+				ArrayList<Service> removable = Simulator.removableServices(needLinks, p.getServices(), 
 						(graph.getPlatformMaxLoad() - p.getDegree()));
 				if (p.getDegree() < graph.getPlatformMaxLoad() && removable.size() > 0) {
 					needLinks.removeAll(removable);

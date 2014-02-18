@@ -1,6 +1,6 @@
 package simulacron.strategy.fate;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.App;
 import simulacron.model.Fate;
 import simulacron.strategy.AbstractStrategy;
@@ -33,7 +33,7 @@ public KillApp(String s) {
 
 
 @Override
-public void evolve(BipartiteGraph graph, Fate agent) {
+public void evolve(Simulator graph, Fate agent) {
 
   if (counter < Math.min(graph.getMaxCycles(), Integer.MAX_VALUE) - 1
       && timing.size() < 1000) {

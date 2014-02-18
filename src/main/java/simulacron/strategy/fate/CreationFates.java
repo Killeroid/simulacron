@@ -8,7 +8,7 @@ import java.util.Set;
 
 import sim.util.Bag;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Service;
 import simulacron.util.Log;
@@ -19,7 +19,7 @@ public class CreationFates {
 public CreationFates() {}
 
 
-public static void cloningMutateRandom(BipartiteGraph graph, double populationCreationRatio,
+public static void cloningMutateRandom(Simulator graph, double populationCreationRatio,
     double servicesSizeVariation) {
 	if (graph.getNumPlatforms() * (1 + populationCreationRatio) <= graph.getMaxPlatforms()) {
 		for (int i = 0; i < graph.getNumPlatforms() * populationCreationRatio; i++) {
@@ -34,7 +34,7 @@ public static void cloningMutateRandom(BipartiteGraph graph, double populationCr
 				cloneServices.add(graph.services.get(graph.random().nextInt(graph.getNumServices())));
 			}
 			for (Service s : cloneServices) {
-				BipartiteGraph.addUnique(clone.getServices(), s);
+				Simulator.addUnique(clone.getServices(), s);
 			}
 			clone.setStrategy(source.getStrategy());
 			Log.debug("Platform <" + source + "> has been cloned");
@@ -45,7 +45,7 @@ public static void cloningMutateRandom(BipartiteGraph graph, double populationCr
 }
 
 
-public static void split(BipartiteGraph graph, double servicesTransmitted, double populationCreationRatio) {
+public static void split(Simulator graph, double servicesTransmitted, double populationCreationRatio) {
 	for (int i = 0; i < graph.getNumPlatforms() * populationCreationRatio; i++) {
 		if (graph.getNumPlatforms() < graph.getMaxPlatforms()) {
 			Platform source = graph.platforms.get(graph.random().nextInt(graph.getNumPlatforms()));
@@ -56,11 +56,11 @@ public static void split(BipartiteGraph graph, double servicesTransmitted, doubl
 			Bag sourceServices = new Bag(source.getServices());
 			sourceServices.shuffle(graph.random());
 			for (int j = 0; j < sourceServices.size() * servicesTransmitted; j++) {
-				BipartiteGraph.addUnique(clone1.getServices(), (Service)sourceServices.get(j));
+				Simulator.addUnique(clone1.getServices(), (Service)sourceServices.get(j));
 			}
 			sourceServices.shuffle(graph.random());
 			for (int j = 0; j < sourceServices.size() * servicesTransmitted; j++) {
-				BipartiteGraph.addUnique(clone2.getServices(), (Service)sourceServices.get(j));
+				Simulator.addUnique(clone2.getServices(), (Service)sourceServices.get(j));
 			}
 			clone1.setStrategy(source.getStrategy());
 			clone2.setStrategy(source.getStrategy());
@@ -74,7 +74,7 @@ public static void split(BipartiteGraph graph, double servicesTransmitted, doubl
 }
 
 
-public static void splitExact(BipartiteGraph graph, double servicesTransmitted, int amount) {
+public static void splitExact(Simulator graph, double servicesTransmitted, int amount) {
 	if (graph.getNumPlatforms() < graph.getMaxPlatforms()) {
 		for (int i = 0; i < amount; i++) {
 			Platform source = graph.platforms.get(graph.random().nextInt(graph.getNumPlatforms()));
@@ -85,11 +85,11 @@ public static void splitExact(BipartiteGraph graph, double servicesTransmitted, 
 			Bag sourceServices = new Bag(source.getServices());
 			sourceServices.shuffle(graph.random());
 			for (int j = 0; j < sourceServices.size() * servicesTransmitted; j++) {
-				BipartiteGraph.addUnique(clone1.getServices(), (Service)sourceServices.get(j));
+				Simulator.addUnique(clone1.getServices(), (Service)sourceServices.get(j));
 			}
 			sourceServices.shuffle(graph.random());
 			for (int j = 0; j < sourceServices.size() * servicesTransmitted; j++) {
-				BipartiteGraph.addUnique(clone2.getServices(), (Service)sourceServices.get(j));
+				Simulator.addUnique(clone2.getServices(), (Service)sourceServices.get(j));
 			}
 			clone2.setStrategy(source.getStrategy());
 			graph.removeEntity(graph.platforms, source);

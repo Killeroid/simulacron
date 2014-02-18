@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Service;
 
 
@@ -16,12 +16,12 @@ import simulacron.model.Service;
 
 public class DNAExtensionSpeciation implements DNASpeciation{
         public List<Service> speciate(List<Service> current_dna, List<Service> all_services){
-			if(current_dna.size() == BipartiteGraph.INSTANCE.getInitServices())
+			if(current_dna.size() == Simulator.INSTANCE.getInitServices())
 				return new ArrayList<Service> (current_dna);
         	Set<Service> current_services = new HashSet<Service>(current_dna);
 			Service new_service;
 			do {
-				new_service = all_services.get(BipartiteGraph.INSTANCE.random.nextInt(all_services.size()));
+				new_service = all_services.get(Simulator.INSTANCE.random.nextInt(all_services.size()));
 			}while(!current_services.add(new_service));
 			return new ArrayList<Service> (current_services);
         }

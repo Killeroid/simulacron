@@ -1,7 +1,7 @@
 package simulacron.strategy.extinction;
 
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.strategy.AbstractStrategy;
 
@@ -15,9 +15,9 @@ protected ExtinctionStrategy(String n) {
 
 
 @Override
-abstract public void evolve(BipartiteGraph graph, T agent);
+abstract public void evolve(Simulator graph, T agent);
 
 
-abstract public boolean die(T entity, BipartiteGraph graph);
+abstract public boolean die(T entity, Simulator graph);
 
 }

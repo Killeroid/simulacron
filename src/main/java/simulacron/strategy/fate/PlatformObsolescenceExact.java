@@ -3,7 +3,7 @@ package simulacron.strategy.fate;
 import java.util.Comparator;
 
 import sim.util.Bag;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
 import simulacron.strategy.AbstractStrategy;
@@ -30,7 +30,7 @@ public class PlatformObsolescenceExact  extends AbstractStrategy<Fate> {
 	}
 
 	@Override
-	public void evolve(BipartiteGraph graph, Fate agent) {
+	public void evolve(Simulator graph, Fate agent) {
 		Bag platforms = new Bag(graph.platforms);
 		platforms.sort(new Comparator() {
 

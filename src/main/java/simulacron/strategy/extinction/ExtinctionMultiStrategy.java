@@ -3,7 +3,7 @@ package simulacron.strategy.extinction;
 
 import java.util.List;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.model.StrategyFactory;
 
@@ -20,13 +20,13 @@ protected ExtinctionMultiStrategy(String n) {
 }
 
 
-public void initStrategies(BipartiteGraph graph) {
+public void initStrategies(Simulator graph) {
 	this.killers = (List)StrategyFactory.fINSTANCE.createPlatformExtinctionStrategies();
 }
 
 
 @Override
-public boolean die(Entity e, BipartiteGraph graph) {
+public boolean die(Entity e, Simulator graph) {
 	if (e.dead) return true;
 	for (ExtinctionStrategy<Entity> killer : killers) {
 		if (killer.die(e, graph)) {
@@ -39,7 +39,7 @@ public boolean die(Entity e, BipartiteGraph graph) {
 
 
 @Override
-public void evolve(BipartiteGraph graph, Entity agent) {
+public void evolve(Simulator graph, Entity agent) {
 	die(agent, graph);
 	
 }

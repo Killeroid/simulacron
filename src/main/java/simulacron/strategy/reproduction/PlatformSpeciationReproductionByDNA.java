@@ -3,7 +3,7 @@ package simulacron.strategy.reproduction;
 import java.util.ArrayList;
 import java.util.List;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Service;
 
@@ -19,7 +19,7 @@ public class PlatformSpeciationReproductionByDNA extends ReproStrategy<Platform>
 	
 	@Override
 	public List<Platform> reproduce(Platform parent,
-			BipartiteGraph state) {
+			Simulator state) {
 		List<Service> services = speciator.speciate(parent.services, state.services);
 		List<Platform> children = new ArrayList<Platform>();
 	Platform pltf = state.createPlatform(""); // TODO
@@ -31,7 +31,7 @@ public class PlatformSpeciationReproductionByDNA extends ReproStrategy<Platform>
 	}
 
     @Override
-    public void evolve(BipartiteGraph graph, Platform agent) {
+    public void evolve(Simulator graph, Platform agent) {
       reproduce(agent, graph);
     }
 

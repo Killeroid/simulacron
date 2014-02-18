@@ -1,6 +1,6 @@
 package simulacron.strategy.fate;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.strategy.AbstractStrategy;
 import simulacron.strategy.Strategy;
@@ -20,7 +20,7 @@ public NeutralModel() {
 }
 
 @Override
-public void evolve(BipartiteGraph graph, Fate agent)  {
+public void evolve(Simulator graph, Fate agent)  {
 	kill.evolve(graph,agent);
 	add.evolve(graph,agent);
 	//graph.removeAllEdges();
@@ -28,7 +28,7 @@ public void evolve(BipartiteGraph graph, Fate agent)  {
 
 @Override
 public void init(String stratId) {
-	kill = (Strategy<Fate>) BipartiteGraph.getStrategy(Configuration.getString(stratId + ".kill"));
-	add = (Strategy<Fate>) BipartiteGraph.getStrategy(Configuration.getString(stratId + ".add"));
+	kill = (Strategy<Fate>) Simulator.getStrategy(Configuration.getString(stratId + ".kill"));
+	add = (Strategy<Fate>) Simulator.getStrategy(Configuration.getString(stratId + ".add"));
 }
 }

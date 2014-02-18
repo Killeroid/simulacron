@@ -1,6 +1,6 @@
 package simulacron.strategy.fate;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.strategy.AbstractStrategy;
 
@@ -17,7 +17,7 @@ public class AttackServices extends AbstractStrategy<Fate> {
   }
 
     @Override
-    public void evolve(BipartiteGraph graph, Fate agent) {
+    public void evolve(Simulator graph, Fate agent) {
         //TODO
     }
 }

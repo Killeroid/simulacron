@@ -9,19 +9,19 @@ import java.util.TreeMap;
 
 import sim.util.Bag;
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Platform;
 import simulacron.model.Service;
 
 
 public class Metrics {
 
-public static double getPlatformEfficiency(BipartiteGraph graph, Platform platform) {
+public static double getPlatformEfficiency(Simulator graph, Platform platform) {
 	return graph.bipartiteNetwork.getEdges(platform, null).size() / platform.getSize();
 }
 
 
-public static int getPlatformPopularity(BipartiteGraph graph, Platform platform) {
+public static int getPlatformPopularity(Simulator graph, Platform platform) {
 	Bag uniqueEdges = graph.bipartiteNetwork.getEdges(platform, null);
 	for (Object edge : graph.bipartiteNetwork.getEdges(platform, null)) {
 		uniqueEdges.removeMultiply(edge);
@@ -30,7 +30,7 @@ public static int getPlatformPopularity(BipartiteGraph graph, Platform platform)
 }
 
 
-public static Platform getSmallestPlatform(BipartiteGraph graph) {
+public static Platform getSmallestPlatform(Simulator graph) {
 	Map<Integer, Platform> platformBySizeSorted = new TreeMap<Integer, Platform>();
 	for (Platform p : graph.platforms) {
 		platformBySizeSorted.put(p.getSize(), p);
@@ -39,7 +39,7 @@ public static Platform getSmallestPlatform(BipartiteGraph graph) {
 }
 
 
-public static Platform getBiggestPlatform(BipartiteGraph graph) {
+public static Platform getBiggestPlatform(Simulator graph) {
 	Map<Integer, Platform> platformBySizeSorted = new TreeMap<Integer, Platform>();
 	for (Platform p : graph.platforms) {
 		// using negative size so the biggest platforms are first
@@ -49,7 +49,7 @@ public static Platform getBiggestPlatform(BipartiteGraph graph) {
 }
 
 
-public static List<List<Service>> getSpecies(BipartiteGraph graph) {
+public static List<List<Service>> getSpecies(Simulator graph) {
 	List<List<Service>> result = new ArrayList<List<Service>>();
 
 	return result;

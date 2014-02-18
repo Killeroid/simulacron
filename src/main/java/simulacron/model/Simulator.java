@@ -48,7 +48,7 @@ import ec.util.MersenneTwisterFast;
  * @author Andre Elie
  * @author Kwaku Yeboah-Antwi
  */
-public class simulacron extends SimState {
+public class Simulator extends SimState {
 
 /**
  * Initial number of platforms.
@@ -130,7 +130,7 @@ public static MetricsMonitor metrics;
 
 protected boolean changed;
 
-public static simulacron INSTANCE = null;
+public static Simulator INSTANCE = null;
 
 protected boolean centralized;
 
@@ -407,25 +407,25 @@ private void init() {
 }
 
 
-public simulacron(long seed) {
+public Simulator(long seed) {
 	super(seed);
 	init();
 }
 
 
-public simulacron(MersenneTwisterFast random) {
+public Simulator(MersenneTwisterFast random) {
 	super(random);
 	init();
 }
 
 
-public simulacron(MersenneTwisterFast random, Schedule schedule) {
+public Simulator(MersenneTwisterFast random, Schedule schedule) {
 	super(random, schedule);
 	init();
 }
 
 
-public simulacron(long seed, Schedule schedule) {
+public Simulator(long seed, Schedule schedule) {
 	super(seed, schedule);
 	init();
 }
@@ -436,8 +436,8 @@ public simulacron(long seed, Schedule schedule) {
  * 
  * @return clone
  */
-public simulacron extinctionClone() {
-	simulacron clone = new simulacron(random());
+public Simulator extinctionClone() {
+	Simulator clone = new Simulator(random());
 	clone.bipartiteNetwork = new Network(bipartiteNetwork);
 	clone.initPlatforms = initPlatforms;
 	clone.initApps = initApps;
@@ -709,7 +709,7 @@ public static String simulate(String[] args, int runsNumber, int currentConfig,
 		startTime = System.currentTimeMillis();
 		System.err.println("RUN: starting run " + (currentConfig + 1) + "." + (j + 1));
 		// run execution
-		doLoop(simulacron.class, args);
+		doLoop(Simulator.class, args);
 		// renewing seed value
 		multiRunSeed += (polarity ? -1 : 1) * (currentConfig + j + 1);
 		polarity = !polarity;
@@ -893,7 +893,7 @@ public static void main(String[] args) {
 			e.printStackTrace();
 		}
 	} else {
-		doLoop(simulacron.class, args);
+		doLoop(Simulator.class, args);
 	}
 	System.exit(0);
 }
@@ -1078,7 +1078,7 @@ public static ArrayList<Strategy<? extends Steppable>> getExtinctionStrategies(S
 	try {
 		String[] stratList = Configuration.getString("extinction." + strategyType).split(" ");
 		for (String strat: stratList) {
-			Strategy<? extends Steppable> strategy = (Strategy<? extends Steppable>)simulacron.getStrategy(strat);
+			Strategy<? extends Steppable> strategy = (Strategy<? extends Steppable>)Simulator.getStrategy(strat);
 			strategies.add(strategy);
 		}
 	}

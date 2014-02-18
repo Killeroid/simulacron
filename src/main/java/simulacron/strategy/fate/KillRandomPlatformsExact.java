@@ -1,6 +1,6 @@
 package simulacron.strategy.fate;
 
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Fate;
 import simulacron.model.Platform;
 import simulacron.strategy.AbstractStrategy;
@@ -27,7 +27,7 @@ public class KillRandomPlatformsExact  extends AbstractStrategy<Fate> {
 	}
 
 	@Override
-	public void evolve(BipartiteGraph graph, Fate agent) {
+	public void evolve(Simulator graph, Fate agent) {
 		for (int i = 0; i < amount; i++) {
 			if (graph.getNumPlatforms() > 0) {
 				Platform killed = graph.platforms.get(graph.random().nextInt(graph.getNumPlatforms()));

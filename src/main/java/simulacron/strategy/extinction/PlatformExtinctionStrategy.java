@@ -1,10 +1,10 @@
 package simulacron.strategy.extinction;
 
 import simulacron.model.App;
-import simulacron.model.BipartiteGraph;
+import simulacron.model.Simulator;
 import simulacron.model.Entity;
 import simulacron.model.Platform;
 
 public interface PlatformExtinctionStrategy {
-	 public boolean die(Platform platform, BipartiteGraph graph);
+	 public boolean die(Platform platform, Simulator graph);
 }

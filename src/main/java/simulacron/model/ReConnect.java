@@ -18,7 +18,7 @@ public class ReConnect implements Steppable {
 
 	@Override
 	public void step(SimState state) {
-		BipartiteGraph graph = (BipartiteGraph) state;
+		Simulator graph = (Simulator) state;
 
 	App a;
 	for (int i = graph.getNumApps() - 1; i >= 0; i--) {
