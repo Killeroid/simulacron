@@ -1,7 +1,6 @@
 package simulacron.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +11,8 @@ import java.util.Set;
  * to optimize the access and speed up the comparison of the entities.
  *
  * @author Marco Biazzini
+ * 
+ * Services can both depend on other services and also provide/subsume other services
  */
 public class Service implements Comparable<Service> {
 
@@ -44,13 +45,17 @@ public class Service implements Comparable<Service> {
 	}
 	
 	/*
-	 * Services that I depends on
+	 * Services that I depend on
 	 */
 	public List<Service> getDependencies() {
 		return new ArrayList<Service>(this.dependencies);
 	}
 	
 
+	/*
+	 * Add new dependencies
+	 * Check to make sure any dependency isnt already provided
+	 */
 	public void addDependencies(List<Service> new_deps) {
 		this.dependencies.addAll(new_deps);
 	}
@@ -75,10 +80,16 @@ public class Service implements Comparable<Service> {
 	
 	public void addProvides(List<Service> srvcs) {
 		this.supersedes.addAll(srvcs);
+		if (this.dependencies.removeAll(this.supersedes)) {
+			System.out.println("Servce " + id + " removed some dependencies");
+		}
 	}
 	
 	public void addProvides(Service srvc) {
 		this.supersedes.add(srvc);
+		if (this.dependencies.remove(srvc)) {
+			System.out.println("Servce " + id + " removed this dependency");
+		}
 	}
 	
 	public boolean canProvide(Service s) {
@@ -99,7 +110,6 @@ public class Service implements Comparable<Service> {
 	}
 	
 
-
 	@Override
 	public int compareTo(Service s) {
 		return id - s.id;
@@ -119,11 +129,23 @@ public class Service implements Comparable<Service> {
 		return false;
 	}
 
-	public Service newVersion(int id) {
+	public Service newVersion() {
 		Service srvc = new Service(id, name, version + 1, ServiceState.OK);
 		srvc.addDependencies(getDependencies());
 		srvc.addProvides(provides());
 		return srvc;
+	}
+	
+	public Service mergeService(Service s) {
+		Service srvc = new Service(Service.counter);
+		Service.counter++;
+		//Add all services this service depends on
+		srvc.addDependencies(getDependencies());
+		srvc.addDependencies(s.getDependencies());
+		//Add all services this services provides/subsumes
+		srvc.addProvides(provides());
+		srvc.addProvides(s.provides());
+		return s;
 	}
 
 	@Override

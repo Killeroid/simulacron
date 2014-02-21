@@ -31,7 +31,7 @@ public List<Service> getDependencies() {
 
 
 public void addDependencies(List<Service> new_deps) {
-	Set all_services = new HashSet(this.services);
+	Set<Service> all_services = new HashSet<Service>(this.services);
 	all_services.addAll(new_deps);
 	this.services.clear();
 	this.services.addAll(all_services);
